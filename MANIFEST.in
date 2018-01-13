@@ -1,0 +1,2 @@
+include versioneer.py
+include docker_ds/_version.py
