@@ -34,9 +34,6 @@ RUN apt-get update && apt-get install --no-install-recommends --allow-unauthenti
 RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
     locale-gen
 
-ADD requirements.txt /tmp/
-RUN pip install -r /tmp/requirements.txt
-
 # Configure environment
 ENV SHELL=/bin/bash \
     NB_USER=jovyan \
@@ -64,3 +61,8 @@ COPY docker/notebook/start-singleuser.sh /usr/local/bin/
 COPY docker/notebook/jupyter_notebook_config.py /etc/jupyter/
 RUN fix-permissions /etc/jupyter/
 USER $NB_USER
+
+ADD requirements.txt /tmp/
+RUN python -m venv .venvs/notebook \
+    && /bin/bash -c "source /home/jovyan/.venvs/notebook/bin/activate; pip install -r /tmp/requirements.txt"
+
