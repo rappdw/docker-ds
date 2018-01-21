@@ -64,5 +64,5 @@ USER $NB_USER
 
 ADD requirements.txt /tmp/
 RUN python -m venv .venvs/notebook \
-    && /bin/bash -c "source /home/jovyan/.venvs/notebook/bin/activate; pip install -r /tmp/requirements.txt"
+    && /bin/bash -c "source /home/jovyan/.venvs/notebook/bin/activate; pip install -r /tmp/requirements.txt; jupyter serverextension enable --py jupyterlab"
 
