@@ -58,11 +58,22 @@ WORKDIR $HOME
 COPY docker/notebook/start.sh /usr/local/bin/
 COPY docker/notebook/start-notebook.sh /usr/local/bin/
 COPY docker/notebook/start-singleuser.sh /usr/local/bin/
+COPY docker/notebook/setup-labs.sh /usr/local/bin/
 COPY docker/notebook/jupyter_notebook_config.py /etc/jupyter/
 RUN fix-permissions /etc/jupyter/
-USER $NB_USER
+
+RUN wget -q https://nodejs.org/dist/v8.9.4/node-v8.9.4-linux-x64.tar.xz && \
+    tar -xf node-v8.9.4-linux-x64.tar.xz && \
+    cp -r node-v8.9.4-linux-x64/bin/* /usr/local/bin && \
+    cp -r node-v8.9.4-linux-x64/include/* /usr/local/include && \
+    cp -r node-v8.9.4-linux-x64/lib/* /usr/local/lib && \
+    cp -r node-v8.9.4-linux-x64/share/* /usr/local/share && \
+    rm -rf node-v8.9.4-linux-x64 node-v8.9.4-linux-x64.tar.xz
+
 
 ADD requirements.txt /tmp/
-RUN python -m venv .venvs/notebook \
-    && /bin/bash -c "source /home/jovyan/.venvs/notebook/bin/activate; pip install -r /tmp/requirements.txt; jupyter serverextension enable --py jupyterlab"
+
+USER $NB_USER
+RUN python -m venv .venvs/notebook
+RUN setup-labs.sh
 

@@ -11,6 +11,10 @@ c = get_config()
 c.NotebookApp.ip = '*'
 c.NotebookApp.port = 8888
 c.NotebookApp.open_browser = False
+# todo: need to figure out a clever way to work githup OAuth info into the jupyter config
+# todo: at the point of container startup... (using credstash in some derived projects...)
+#c.GitHubConfig.client_id = ''
+#c.GitHubConfig.client_secret = ''
 
 # Generate a self-signed certificate
 if 'GEN_CERT' in os.environ:

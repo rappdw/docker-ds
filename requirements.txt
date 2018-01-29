@@ -1,7 +1,9 @@
+bokeh
 jupyter
 jupyter_contrib_nbextensions
 jupyter_nbextensions_configurator
 jupyterlab
+jupyterlab_github
 numpy
 matplotlib
 networkx
