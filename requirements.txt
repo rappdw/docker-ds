@@ -10,6 +10,7 @@ matplotlib
 networkx
 nxpd
 sympy
+scikit-learn
 scipy
 pandas
 seaborn
