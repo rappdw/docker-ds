@@ -1,5 +1,7 @@
 bokeh
 credstash
+git+https://github.com/bokeh/datashader.git@0.6.5#egg=datashader
+holoviews
 jupyter
 jupyter_contrib_nbextensions
 jupyter_nbextensions_configurator
