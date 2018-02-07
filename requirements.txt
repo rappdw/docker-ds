@@ -16,3 +16,4 @@ scikit-learn
 scipy
 pandas
 seaborn
+xarray
