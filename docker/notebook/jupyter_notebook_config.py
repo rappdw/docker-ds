@@ -16,13 +16,15 @@ try:
     from credstash import get_session_params, listSecrets, getSecret
     session_params = get_session_params('ds-notebook', None)
     items = [item['name'] for item in listSecrets(**session_params) if item['name'] in [
-        'notebook.password', 'github.client_id', 'github.client_secret', 'google.drive.client_id'
+        'notebook.password', 'notebook.token', 'github.client_id', 'github.client_secret', 'google.drive.client_id'
     ]]
 except Exception:
     items = []
 
 if 'notebook.password' in items:
     c.NotebookApp.password = f"{getSecret('notebook.password', **session_params)}"
+if 'notebook.token' in items:
+    c.NotebookApp.token = f"{getSecret('notebook.token', **session_params)}"
 if 'github.client_id' in items:
     c.GitHubConfig.client_id = f"{getSecret('github.client_id', **session_params)}"
 if 'github.client_secret' in items:
