@@ -9,18 +9,46 @@ It's easiest to use this container together with [dockerutils](https://pypi.pyth
 
 Create a docker directory in your repository and place the following dockerutils.cfg file in that directory:
 
-**NOTE**: The mount of .aws into the container is required in order to use credstash to set
-notebook password and github plugin OAuth credentials.
+## Credentials
+There are a number of credentials utlized by this container, including: notebook password, github plugin OAuth 
+credentials, google drive OAuth credentials, etc.
 
-Also, you must configure a 'ds-notebook' profile.
+The pattern for exposing these credentials to the docker container is to store the
+credentials in credstash, and then bind mount the current user's .aws directory into
+the container upon container start.
 
+The code assumes an aws profile of 'ds-notebook'. If unable to access credstash, 
+appropriate defaults will be used if available. In most cases extensions will not
+function.
+
+## Configuration
+### dockerutils.cfg
 ```ini
 [notebook]
 volumes=--mount type=bind,source={project_root},target=/home/jovyan/model-ner -v /data:/data --mount type=bind,source=/Users/{user}/.aws,target=/home/jovyan/.aws
 ports=-p 8888:8888
 ```
-Create a notebook subdirectory and place the following Dockefile in that directory:
 
+### AWS
+In your ~/.aws directory create a credentials and config file simlar to the following:
+
+**credentials**
+```ini
+[ds-notebook]
+aws_secret_access_key = ...
+aws_access_key_id = ....
+```
+
+**config**
+```ini
+[profile ds-notebook]
+region = us-west-2
+```
+
+### Docker Configuration in Derived Repo
+Create a docker/notebook subdirectory and place a Dockefile similar to the following in that directory:
+
+**DockerFile**
 ```dockerfile
 FROM rappdw/docker-ds
 
@@ -34,6 +62,7 @@ RUN . /home/jovyan/.venvs/notebook/bin/activate \
 CMD start-repo-notebook.sh
 ```
 
+**start-repo-notebook.sh**
 ```bash
 #!/usr/bin/env bash
 
@@ -53,3 +82,13 @@ popd
 # start the notebook
 start-notebook.sh
 ```
+### Related Extensions
+#### github
+[Jupyterlab Github](https://github.com/jupyterlab/jupyterlab-github)
+
+Requires credstash credentials named: github.client_id, github.client_secret
+
+#### Google Drive
+[Realtime Collaboration via Google Drive](https://github.com/jupyterlab/jupyterlab-google-drive/blob/master/docs/advanced.md#Realtime-API)
+
+Requires credstash credential named: google.drive.client_id

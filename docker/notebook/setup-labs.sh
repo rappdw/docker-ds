@@ -11,3 +11,5 @@ echo "**** enable github extension ****"
 jupyter serverextension enable --sys-prefix --py jupyterlab_github
 echo "**** enable bokeh extension ****"
 jupyter labextension install jupyterlab_bokeh
+echo "**** setup collaboration via Google Drive ****"
+jupyter labextension install @jupyterlab/google-drive

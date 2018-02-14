@@ -15,7 +15,9 @@ c.NotebookApp.open_browser = False
 try:
     from credstash import get_session_params, listSecrets, getSecret
     session_params = get_session_params('ds-notebook', None)
-    items = [item['name'] for item in listSecrets(**session_params) if item['name'] in ['notebook.password', 'github.client_id', 'github.client_secret']]
+    items = [item['name'] for item in listSecrets(**session_params) if item['name'] in [
+        'notebook.password', 'github.client_id', 'github.client_secret', 'google.drive.client_id'
+    ]]
 except Exception:
     items = []
 
@@ -25,11 +27,13 @@ if 'github.client_id' in items:
     c.GitHubConfig.client_id = f"{getSecret('github.client_id', **session_params)}"
 if 'github.client_secret' in items:
     c.GitHubConfig.client_secret = f"{getSecret('github.client_secret', **session_params)}"
-
-# todo: need to figure out a clever way to work githup OAuth info into the jupyter config
-# todo: at the point of container startup... (using credstash in some derived projects...)
-#c.GitHubConfig.client_id = ''
-#c.GitHubConfig.client_secret = ''
+if 'google.drive.client_id' in items:
+    google_drive_cfg_dir = '/home/jovyan/.jupyter/lab/user-settings/@jupyterlab/google-drive/'
+    os.makedirs(google_drive_cfg_dir, exist_ok=True)
+    with open(os.path.join(google_drive_cfg_dir, 'drive.jupyterlab-settings'), 'w') as f:
+        f.write(f'''{{
+            "clientId": "{getSecret('google.drive.client_id', **session_params)}"
+        }}''')
 
 # Generate a self-signed certificate
 if 'GEN_CERT' in os.environ:
