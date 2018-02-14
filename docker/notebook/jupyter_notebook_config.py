@@ -31,9 +31,12 @@ if 'google.drive.client_id' in items:
     google_drive_cfg_dir = '/home/jovyan/.jupyter/lab/user-settings/@jupyterlab/google-drive/'
     os.makedirs(google_drive_cfg_dir, exist_ok=True)
     with open(os.path.join(google_drive_cfg_dir, 'drive.jupyterlab-settings'), 'w') as f:
-        f.write(f'''{{
-            "clientId": "{getSecret('google.drive.client_id', **session_params)}"
-        }}''')
+        f.write(
+f'''{{
+    "clientId": "{getSecret('google.drive.client_id', **session_params)}",
+    "realtime": false
+}}'''
+        )
 
 # Generate a self-signed certificate
 if 'GEN_CERT' in os.environ:
