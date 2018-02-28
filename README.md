@@ -92,3 +92,7 @@ Requires credstash credentials named: github.client_id, github.client_secret
 [Realtime Collaboration via Google Drive](https://github.com/jupyterlab/jupyterlab-google-drive/blob/master/docs/advanced.md#Realtime-API)
 
 Requires credstash credential named: google.drive.client_id
+
+## Versions
+
+1.0.10 - No changes to Dockerfile source, rebuild to pick up latest jupyterlab beta (v0.31.10)
