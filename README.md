@@ -25,7 +25,7 @@ function.
 ### dockerutils.cfg
 ```ini
 [notebook]
-volumes=--mount type=bind,source={project_root},target=/home/jovyan/model-ner -v /data:/data --mount type=bind,source=/Users/{user}/.aws,target=/home/jovyan/.aws
+volumes=--mount type=bind,source={project_root},target=/home/jovyan/project -v /data:/data --mount type=bind,source=/Users/{user}/.aws,target=/home/jovyan/.aws
 ports=-p 8888:8888
 ```
 
@@ -50,38 +50,18 @@ Create a docker/notebook subdirectory and place a Dockefile similar to the follo
 
 **DockerFile**
 ```dockerfile
-FROM rappdw/docker-ds
+USER root
 
 ADD pip.conf /home/jovyan/.pip/pip.conf
 ADD requirements.txt /tmp/requirements.txt
-ADD docker/notebook/start-repo-notebook.sh /usr/local/bin
 
-RUN . /home/jovyan/.venvs/notebook/bin/activate \
-    && pip install -r /tmp/requirements.txt
+RUN pip install -r /tmp/requirements.txt
+RUN fix-permissions /home/$NB_USER/.pip
 
-CMD start-repo-notebook.sh
+USER $NB_USER
+CMD start-project-notebook.sh
 ```
 
-**start-repo-notebook.sh**
-```bash
-#!/usr/bin/env bash
-
-# get the password from credstash
-. /home/jovyan/.venvs/notebook/bin/activate
-
-# install an editable version of the ner module into site-packages
-pip install -e /home/jovyan/repo/
-
-# trust our notebooksc.NotebookApp.password
-pushd /home/jovyan/repo/notebooks
-for f in *.ipynb; do
-    jupyter trust "$f"
-done
-popd
-
-# start the notebook
-start-notebook.sh
-```
 ### Related Extensions
 #### github
 [Jupyterlab Github](https://github.com/jupyterlab/jupyterlab-github)
@@ -95,4 +75,6 @@ Requires credstash credential named: google.drive.client_id
 
 ## Versions
 
+1.0.11 - Include Tensorflow (both CPU and GPU, using dockerutils handling of GPU)
+        - add start-project-notebook.sh (derived project simplification)
 1.0.10 - No changes to Dockerfile source, rebuild to pick up latest jupyterlab beta (v0.31.10)
