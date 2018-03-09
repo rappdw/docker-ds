@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install --no-install-recommends --allow-unauthenti
     curl \
     git \
     gfortran \
+    graphviz \
     libatlas-base-dev \
     libblas-common \
     libblas3 \
