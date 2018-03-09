@@ -1,4 +1,4 @@
-FROM rappdw/nvidia-python:p3.6.3-u16.04-c8.0-n6.0
+FROM rappdw/nvidia-python:u16.04-p.3.6.4-cuda9.0-cudnn7.0
 
 RUN apt-get update && apt-get install --no-install-recommends --allow-unauthenticated -y \
     build-essential \
