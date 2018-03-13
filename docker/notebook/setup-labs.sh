@@ -10,3 +10,5 @@ echo "**** enable bokeh extension ****"
 jupyter labextension install jupyterlab_bokeh
 echo "**** setup collaboration via Google Drive ****"
 jupyter labextension install @jupyterlab/google-drive
+echo "**** setup interaactive matplotlib ****"
+jupyter labextension install @jupyter-widgets/jupyterlab-manager jupyter-matplotlib

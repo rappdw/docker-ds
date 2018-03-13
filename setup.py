@@ -10,10 +10,10 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 
 setup(
-    name='docker-ds',
+    name='docker_ds',
     version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
-    description='docker-ds',
+    description='Dockerized DataScience Notebook',
     long_description=long_description,
     url='https://github.com/rappdw/docker-ds.git',
     author='Daniel Rapp',
