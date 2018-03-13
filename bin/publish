@@ -18,6 +18,6 @@ docker tag docker-ds-notebook:$USER rappdw/docker-ds:$VERSION
 
 echo "**** Logging into Docker Hub ****"
 docker login
-docker push rappdw/docker-ds:latest-tf-.14
+docker push rappdw/docker-ds:latest-tf-1.4
 docker push rappdw/docker-ds:$VERSION
 
