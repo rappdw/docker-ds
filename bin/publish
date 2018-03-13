@@ -14,8 +14,10 @@ if [[ $VERSION = *"+"* ]]; then
 fi
 
 VERSION=${VERSION:1}
-docker tag docker-ds-notebook:$USER rappdw/docker-ds:$VERSION
+#docker tag docker-ds-notebook:$USER rappdw/docker-ds:$VERSION
 
 
-#docker login
-#docker push
+docker login
+docker push rappdw/docker-ds:latest
+docker push rappdw/docker-ds:$VERSION
+
