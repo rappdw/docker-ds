@@ -75,6 +75,7 @@ Requires credstash credential named: google.drive.client_id
 
 ## Versions
 
+1.0.15 - start-project-notebook.sh more robust
 1.0.14 - Add labmanager and matplotlib jupyterlab extensions
 1.0.13 - Include GraphViz in the image
 1.0.12 - Update to latest CUDA cdNN Tensorflow
