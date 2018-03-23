@@ -2,9 +2,6 @@
 
 # assumes that the project has been mounted into /home/jovyan/project
 
-CPU_GPU_ENV=${CPU_GPU_ENV:-"/cpu-env"}
-. $CPU_GPU_ENV
-
 if [ -e /home/jovyan/project/setup.py ]
 then
     # install an editable version of the ner module into site-packages
