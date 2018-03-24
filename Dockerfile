@@ -1,4 +1,4 @@
-FROM rappdw/nvidia-python:tf-1.4.0
+FROM rappdw/nvidia-python
 
 RUN apt-get update && apt-get install --no-install-recommends --allow-unauthenticated -y \
     build-essential \
