@@ -4,11 +4,17 @@
 
 set -e
 
+if [ -e /home/jovyan/project/notebooks ]; then
+    # for any notebooks in the 'notebooks' sub-dir, sign them, we will "trust" them
+    pushd /home/jovyan/project/notebooks
+    for f in *.ipynb; do
+        jupyter trust "$f"
+    done
+    popd
+fi
+
 # determine if we are running lab or notebook
 NOTEBOOK_MODE=${NOTEBOOK_MODE:-notebook}
-# determine if we are running CPU or GPU
-CPU_GPU_ENV=${CPU_GPU_ENV:-"/cpu-env"}
-. $CPU_GPU_ENV
 
 if [[ ! -z "${JUPYTERHUB_API_TOKEN}" ]]; then
   # launched by JupyterHub, use single-user entrypoint
