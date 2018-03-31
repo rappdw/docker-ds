@@ -1,6 +1,7 @@
-FROM rappdw/nvidia-python
+FROM rappdw/nvidia-python-node
 
-RUN apt-get update && apt-get install --no-install-recommends --allow-unauthenticated -y \
+RUN chmod 1777 /tmp \
+    && apt-get update && apt-get install --no-install-recommends --allow-unauthenticated -y \
     build-essential \
     bzip2 \
     ca-certificates \
@@ -52,13 +53,6 @@ ENV HOME=/home/$NB_USER
 COPY root/ /
 
 RUN pip install -r /tmp/requirements.txt
-RUN wget -q https://nodejs.org/dist/v8.9.4/node-v8.9.4-linux-x64.tar.xz \
-    && tar -xf node-v8.9.4-linux-x64.tar.xz \
-    && cp -r node-v8.9.4-linux-x64/bin/* /usr/local/bin \
-    && cp -r node-v8.9.4-linux-x64/include/* /usr/local/include \
-    && cp -r node-v8.9.4-linux-x64/lib/* /usr/local/lib \
-    && cp -r node-v8.9.4-linux-x64/share/* /usr/local/share \
-    && rm -rf node-v8.9.4-linux-x64 node-v8.9.4-linux-x64.tar.xz
 RUN setup-labs.sh
 
 # Create jovyan user with UID=1000 and in the 'users' group
