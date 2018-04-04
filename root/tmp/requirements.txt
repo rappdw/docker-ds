@@ -13,9 +13,10 @@ numpy
 matplotlib
 networkx
 nxpd
+pandas
+pylantern
 sympy
 scikit-learn
 scipy
-pandas
 seaborn
 xarray
