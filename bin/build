@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
+docker build -t rappdw/docker-ds-builder -f Dockerfile --target builder.
 docker build -t rappdw/docker-ds -f Dockerfile .
