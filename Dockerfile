@@ -52,12 +52,25 @@ ENV HOME=/home/$NB_USER
 
 COPY root/ /
 
-RUN pip install -r /tmp/requirements.txt
-RUN setup-labs.sh
+# Bokeh and Holoviews extensions don't work with latest jupyerlab just yet...
+#    jupyter labextension install \
+#        @jupyter-widgets/jupyterlab-manager \
+#        jupyter-matplotlib \
+#        jupyterlab_bokeh \
+#        @pyviz/jupyterlab_holoviews \
+#        @jupyterlab/plotly-extension \
+#        qgrid \
+#        @jpmorganchase/perspective-jupyterlab \
+#        pylantern \
 
-# Create jovyan user with UID=1000 and in the 'users' group
-# and make sure these dirs are writable by the `users` group.
 RUN useradd -m -s /bin/bash -N -u $NB_UID $NB_USER \
+    && sudo -H pip install -r /tmp/requirements.txt \
+    && jupyter serverextension enable --py jupyterlab \
+    && jupyter labextension install \
+        @jupyter-widgets/jupyterlab-manager \
+        @pyviz/jupyterlab_holoviews \
+        @jupyterlab/plotly-extension \
+        jupyter-matplotlib \
     && fix-permissions $HOME \
     && fix-permissions /etc/jupyter/ \
     && fix-permissions /home/$NB_USER/.jupyter \
@@ -72,12 +85,12 @@ RUN useradd -m -s /bin/bash -N -u $NB_UID $NB_USER \
     && cp /usr/local/bin/jupyter* /.cpu-env/bin \
     && mkdir /.gpu-env/share \
     && cp -r /usr/local/share/jupyter /.gpu-env/share \
-    && cp /usr/local/bin/jupyter* /.gpu-env/bin
+    && cp /usr/local/bin/jupyter* /.gpu-env/bin \
+    && fix-permissions /usr/local
 
 EXPOSE 8888
 WORKDIR $HOME
 ENV WORKDIR=$HOME/project
-RUN fix-permissions /usr/local
 USER $NB_USER
 CMD ["start-notebook.sh"]
 
