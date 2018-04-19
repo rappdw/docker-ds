@@ -52,17 +52,25 @@ ENV HOME=/home/$NB_USER
 
 COPY root/ /
 
-RUN pip install -r /tmp/requirements.txt \
+# Bokeh and Holoviews extensions don't work with latest jupyerlab just yet...
+#    jupyter labextension install \
+#        @jupyter-widgets/jupyterlab-manager \
+#        jupyter-matplotlib \
+#        jupyterlab_bokeh \
+#        @pyviz/jupyterlab_holoviews \
+#        @jupyterlab/plotly-extension \
+#        qgrid \
+#        @jpmorganchase/perspective-jupyterlab \
+#        pylantern \
+
+RUN useradd -m -s /bin/bash -N -u $NB_UID $NB_USER \
+    && sudo -H pip install -r /tmp/requirements.txt \
     && jupyter serverextension enable --py jupyterlab \
     && jupyter labextension install \
         @jupyter-widgets/jupyterlab-manager \
-        jupyter-matplotlib jupyterlab_bokeh \
         @pyviz/jupyterlab_holoviews \
         @jupyterlab/plotly-extension \
-        qgrid \
-        @jpmorganchase/perspective-jupyterlab \
-        pylantern \
-    && useradd -m -s /bin/bash -N -u $NB_UID $NB_USER \
+        jupyter-matplotlib \
     && fix-permissions $HOME \
     && fix-permissions /etc/jupyter/ \
     && fix-permissions /home/$NB_USER/.jupyter \
