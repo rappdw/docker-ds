@@ -1,6 +1,5 @@
 bokeh
 credstash
-git+https://github.com/bokeh/datashader.git@0.6.5#egg=datashader
 graphviz
 holoviews
 ipympl
@@ -15,9 +14,7 @@ nxpd
 matplotlib
 pandas
 plotly
-pylantern
 scikit-learn
 scipy
 seaborn
 sympy
-xarray
