@@ -17,14 +17,13 @@ COPY root/ /
 
 RUN pip install -r /tmp/requirements.txt
 
-# add bokeh once it's updated (should be in the next day or two)
-
 RUN jupyter serverextension enable --py jupyterlab \
     && jupyter labextension install \
         @jupyter-widgets/jupyterlab-manager \
+        jupyter-matplotlib \
+        jupyterlab_bokeh \
         @pyviz/jupyterlab_holoviews \
-        @jupyterlab/plotly-extension \
-        jupyter-matplotlib
+        @jupyterlab/plotly-extension
 
 RUN fix-permissions $HOME /.cpu-env /.gpu-env /usr/local/lib /usr/local/share /usr/local/bin \
     && mkdir /.cpu-env/share \
