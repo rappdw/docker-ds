@@ -3,11 +3,13 @@ credstash
 graphviz
 holoviews
 ipympl
+ipywidgets
 jupyter
 jupyter_contrib_nbextensions
 jupyter_nbextensions_configurator
 jupyterlab
 jupyterlab_github
+jupyterlab_widgets
 networkx
 numpy
 nxpd

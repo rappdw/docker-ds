@@ -18,6 +18,7 @@ COPY root/ /
 RUN pip install -r /tmp/requirements.txt
 
 RUN jupyter serverextension enable --py jupyterlab \
+    && jupyter nbextension enable --py widgetsnbextension \
     && jupyter labextension install \
         @jupyter-widgets/jupyterlab-manager \
         jupyter-matplotlib \
