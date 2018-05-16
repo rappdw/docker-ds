@@ -1,16 +1,17 @@
-#!/bin/bash
+#!/bin/ash
 # Copyright (c) Jupyter Development Team.
 # Distributed under the terms of the Modified BSD License.
 
 set -e
 
 if [ -e /home/jovyan/project/notebooks ]; then
+    TMP_XXX_SAVE=`pwd`
     # for any notebooks in the 'notebooks' sub-dir, sign them, we will "trust" them
-    pushd /home/jovyan/project/notebooks
+    cd /home/jovyan/project/notebooks
     for f in *.ipynb; do
         jupyter trust "$f"
     done
-    popd
+    cd $TMP_XXX_SAVE
 fi
 
 # determine if we are running lab or notebook

@@ -16,7 +16,7 @@ nxpd
 matplotlib
 pandas
 plotly
-scikit-learn
 scipy
+scikit-learn
 seaborn
 sympy
