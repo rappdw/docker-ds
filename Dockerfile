@@ -23,7 +23,7 @@ RUN jupyter serverextension enable --py jupyterlab \
         @jupyter-widgets/jupyterlab-manager \
         jupyter-matplotlib \
         jupyterlab_bokeh \
-        @pyviz/jupyterlab_holoviews \
+        @pyviz/jupyterlab_pyviz \
         @jupyterlab/plotly-extension
 
 RUN fix-permissions $HOME /.cpu-env /.gpu-env /usr/local/lib /usr/local/share /usr/local/bin \
