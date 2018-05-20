@@ -20,17 +20,11 @@ RUN chmod 1777 /tmp \
     && tar -xzf npm-5.7.1.tgz \
     && cd package \
     && ./scripts/install.sh \
+    && cd / \
 	&& apt-get clean \
     && rm -rf /var/tmp /tmp /var/lib/apt/lists/* \
     && mkdir -p /var/tmp /tmp
 
-#RUN apk add --no-cache \
-#        nodejs \
-#        ca-certificates \
-#        libstdc++ \
-#        openblas \
-#        shadow
-#
 RUN jupyter serverextension enable --py jupyterlab \
     && jupyter nbextension enable --py widgetsnbextension \
     && jupyter labextension install \
@@ -40,21 +34,19 @@ RUN jupyter serverextension enable --py jupyterlab \
         @pyviz/jupyterlab_pyviz \
         @jupyterlab/plotly-extension
 
-#COPY root/ /
 #
-## Configure environment
-#ENV NB_USER=jovyan \
-#    NB_UID=1000 \
-#    NB_GID=1000
-#
-## assumes that the project has been mounted into /home/jovyan/project
-## to ensure this derived projects should add the following to their dockerutils.cfg file
-## [notebook]
-## volumes=--mount type=bind,source={project_root},target=/home/jovyan/project
-#
-#RUN addgroup -g $NB_GID -S $NB_USER \
-#    && adduser -u $NB_UID -S $NB_USER -G $NB_USER -s /bin/ash
-#
-#CMD ["/usr/local/bin/start-notebook.sh"]
-#ENTRYPOINT ["/docker-entrypoint.sh"]
-#
+# Configure environment
+ENV NB_USER=jovyan \
+    NB_UID=1000 \
+    NB_GID=1000
+
+# assumes that the project has been mounted into /home/jovyan/project
+# to ensure this derived projects should add the following to their dockerutils.cfg file
+# [notebook]
+# volumes=--mount type=bind,source={project_root},target=/home/jovyan/project
+
+RUN useradd -m -s /bin/bash -N -u $NB_UID $NB_USER
+
+CMD ["/usr/local/bin/start-notebook.sh"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
+
