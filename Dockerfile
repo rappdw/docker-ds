@@ -6,7 +6,9 @@
 FROM python:3.6.5-slim-stretch
 
 COPY root/ /
-RUN pip install --no-cache-dir -r /tmp/requirements.txt
+RUN cd /tmp; \
+    pip install --no-cache-dir pipenv; \
+    pipenv install --system
 RUN chmod 1777 /tmp \
     && apt-get update \
     && apt-get install --no-install-recommends --allow-unauthenticated -y \
