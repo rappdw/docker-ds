@@ -7,8 +7,16 @@ import os
 import errno
 import stat
 
+# detect if this is container is running on a mac
+# this is a bit hacky and if docker changes significantly, it won't work, and it may have some false
+# positives as well, but for now, it works
+on_mac = 'linuxkit-aufs' in os.uname().release
+
 c = get_config()
-c.NotebookApp.ip = '*'
+# in latest version of docker, the docker host IP is being written as the last line in /etc/hosts
+# specifying this will avoid a warning
+for line in open('/etc/hosts', 'r'):pass
+c.NotebookApp.ip = f'{line.split()[0]}'
 c.NotebookApp.port = 8888
 c.NotebookApp.open_browser = False
 
@@ -21,24 +29,20 @@ try:
 except Exception:
     items = []
 
-if 'notebook.password' in items:
-    c.NotebookApp.password = f"{getSecret('notebook.password', **session_params)}"
-if 'notebook.token' in items:
-    c.NotebookApp.token = f"{getSecret('notebook.token', **session_params)}"
+if on_mac:
+    # if we are running on a mac, then go ahead and don't require authentication, we are
+    # in all probibility running on a developers laptop...
+    c.NotebookApp.password = ''
+    c.NotebookApp.token = ''
+else:
+    if 'notebook.password' in items:
+        c.NotebookApp.password = f"{getSecret('notebook.password', **session_params)}"
+    if 'notebook.token' in items:
+        c.NotebookApp.token = f"{getSecret('notebook.token', **session_params)}"
 if 'github.client_id' in items:
     c.GitHubConfig.client_id = f"{getSecret('github.client_id', **session_params)}"
 if 'github.client_secret' in items:
     c.GitHubConfig.client_secret = f"{getSecret('github.client_secret', **session_params)}"
-if 'google.drive.client_id' in items:
-    google_drive_cfg_dir = '/home/jovyan/.jupyter/lab/user-settings/@jupyterlab/google-drive/'
-    os.makedirs(google_drive_cfg_dir, exist_ok=True)
-    with open(os.path.join(google_drive_cfg_dir, 'drive.jupyterlab-settings'), 'w') as f:
-        f.write(
-f'''{{
-    "clientId": "{getSecret('google.drive.client_id', **session_params)}",
-    "realtime": false
-}}'''
-        )
 
 # Generate a self-signed certificate
 if 'GEN_CERT' in os.environ:

@@ -1,8 +1,16 @@
 # Docker Container for Data Science Notebooks
 
-A mashup of the jupyterlab and the NVidia CUDA container
-with Python 3 hand installed and using credstash to manage any secrets (notebook password,
-github plugin oauth, etc.)
+This docker image provides an environment for using Jupyter for
+data science. It includes a number of python libraries that are commonly 
+used as well as several jupyter extensions that are useful, including:
+
+* numpy
+* scikit-learn
+* pandas
+* matplotlib
+* bokeh
+* seaborn
+* holoviews
 
 ## Credentials
 There are a number of credentials utlized by this container, including: notebook password, github plugin OAuth 
@@ -46,19 +54,3 @@ region = us-west-2
 [Jupyterlab Github](https://github.com/jupyterlab/jupyterlab-github)
 
 Requires credstash credentials named: github.client_id, github.client_secret
-
-#### Google Drive
-[Realtime Collaboration via Google Drive](https://github.com/jupyterlab/jupyterlab-google-drive/blob/master/docs/advanced.md#Realtime-API)
-
-Requires credstash credential named: google.drive.client_id
-
-## Versions
-
-* 1.0.16 - Generialization of base image
-* 1.0.15 - start-project-notebook.sh more robust
-* 1.0.14 - Add labmanager and matplotlib jupyterlab extensions
-* 1.0.13 - Include GraphViz in the image
-* 1.0.12 - Update to latest CUDA cdNN Tensorflow
-* 1.0.11 - Include Tensorflow (both CPU and GPU, using dockerutils handling of GPU)
-        - add start-project-notebook.sh (derived project simplification)
-* 1.0.10 - No changes to Dockerfile source, rebuild to pick up latest jupyterlab beta (v0.31.10)
