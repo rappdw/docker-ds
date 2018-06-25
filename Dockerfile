@@ -13,7 +13,8 @@ RUN jupyter serverextension enable --py jupyterlab \
         jupyter-matplotlib \
         jupyterlab_bokeh \
         @pyviz/jupyterlab_pyviz \
-        @jupyterlab/plotly-extension
+        @jupyterlab/plotly-extension \
+        @mflevine/jupyterlab_html
 
 #
 # Configure environment
