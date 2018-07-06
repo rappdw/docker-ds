@@ -4,7 +4,10 @@ COPY root/ /
 
 RUN cd /tmp; \
     pip install --no-cache-dir pipenv; \
-    pipenv install --system
+    pipenv install; \
+    pipenv --rm; \
+    pipenv install --system; \
+    rm -rf /root/.cache
 
 RUN jupyter serverextension enable --py jupyterlab \
     && jupyter nbextension enable --py widgetsnbextension \
