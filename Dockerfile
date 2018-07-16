@@ -3,11 +3,7 @@ FROM rappdw/docker-python-node:p3.6.5-n8.11.3-slim-jessie
 COPY root/ /
 
 RUN cd /tmp; \
-    pip install --no-cache-dir pipenv; \
-    pipenv install; \
-    pipenv --rm; \
-    pipenv install --system; \
-    rm -rf /root/.cache
+    pip install --no-cache-dir -r requirements.txt
 
 RUN jupyter serverextension enable --py jupyterlab \
     && jupyter nbextension enable --py widgetsnbextension \
