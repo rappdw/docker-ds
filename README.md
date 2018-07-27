@@ -1,3 +1,7 @@
+| Build |
+| ----- |
+| [![Build Status](https://img.shields.io/docker/automated/rappdw/docker-ds.svg)](https://hub.docker.com/r/rappdw/docker-ds/) |
+
 # Docker Container for Data Science Notebooks
 
 This docker image provides an environment for using Jupyter for
