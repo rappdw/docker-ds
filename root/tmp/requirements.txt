@@ -5,8 +5,8 @@ holoviews
 ipympl
 ipywidgets
 jupyter
-jupyterlab
-jupyterlab-widgets
+jupyterlab==0.32.1
+jupyterlab-widgets==0.6.15
 networkx
 numpy
 nxpd
@@ -19,4 +19,4 @@ seaborn
 sympy
 jupyter_contrib_nbextensions
 jupyter_nbextensions_configurator
-jupyterlab_github
+jupyterlab_github==0.6.0
