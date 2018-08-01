@@ -6,6 +6,7 @@ import subprocess
 import os
 import errno
 import stat
+from subprocess import check_call
 
 # detect if this is container is running on a mac
 # this is a bit hacky and if docker changes significantly, it won't work, and it may have some false
@@ -66,3 +67,17 @@ if 'GEN_CERT' in os.environ:
     # Restrict access to the file
     os.chmod(pem_file, stat.S_IRUSR | stat.S_IWUSR)
     c.NotebookApp.certfile = pem_file
+
+
+# Autosave .html and .py versions of the notebook for easier diffing with version control systems
+def post_save(model, os_path, contents_manager):
+    """post-save hook for converting notebooks to .py scripts"""
+    if model['type'] != 'notebook':
+        return  # only do this for notebooks
+    d, fname = os.path.split(os_path)
+    output_dir = os.path.join(d, '.diffs')
+    check_call(['jupyter', 'nbconvert', '--to', 'script', '--output-dir', output_dir, fname], cwd=d)
+    check_call(['jupyter', 'nbconvert', '--to', 'html', '--output-dir', output_dir, fname], cwd=d)
+
+if 'DOCKER_DS_DIFFS' in os.environ and os.environ['DOCKER_DS_DIFFS'] == '1':
+    c.FileContentsManager.post_save_hook = post_save
