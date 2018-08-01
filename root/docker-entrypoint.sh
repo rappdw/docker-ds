@@ -12,4 +12,9 @@ elif [ -e /home/jovyan/project/setup.py ]; then
     pip install -e /home/jovyan/project
 fi
 
-exec su - jovyan "$@"
+HOME=/home/jovyan
+if [ -d "/home/jovyan/project" ]; then
+    exec su -m - jovyan -c "cd /home/jovyan/project; $@"
+else
+    exec su -m - jovyan -c "cd /home/jovyan; $@"
+fi

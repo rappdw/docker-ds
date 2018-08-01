@@ -1,6 +1,6 @@
 FROM rappdw/docker-python-node:p3.6.5-n8.11.3-slim-jessie
 
-COPY root/ /
+COPY root/tmp/requirements.txt /tmp/requirements.txt
 
 RUN cd /tmp; \
     pip install --no-cache-dir -r requirements.txt
@@ -27,6 +27,8 @@ ENV NB_USER=jovyan \
 # volumes=--mount type=bind,source={project_root},target=/home/jovyan/project
 
 RUN useradd -m -s /bin/bash -N -u $NB_UID $NB_USER
+
+COPY root/ /
 
 CMD ["/usr/local/bin/start-notebook.sh"]
 ENTRYPOINT ["/docker-entrypoint.sh"]

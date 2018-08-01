@@ -1,6 +1,4 @@
-| Build |
-| ----- |
-| [![Build Status](https://img.shields.io/docker/automated/rappdw/docker-ds.svg)](https://hub.docker.com/r/rappdw/docker-ds/) |
+[![Build Status](https://img.shields.io/docker/automated/rappdw/docker-ds.svg)](https://hub.docker.com/r/rappdw/docker-ds/)
 
 # Docker Container for Data Science Notebooks
 
@@ -15,6 +13,13 @@ used as well as several jupyter extensions that are useful, including:
 * bokeh
 * seaborn
 * holoviews
+
+## VCS & Notebooks
+While the `.ipynb` files are json, comparing the raw file formats aren't ideal for diffing changes, etc. In order to
+better facilitate working with VCS, especially for human diff comprehension, this image support a jupyter save hook
+that converts a notebook into `.py` and `.html` files in a `.diffs` sub-directory. To enable this, pass the envrionment
+variable `DOCKER_DS_DIFFS=1` when starting the container. (See `run-notebook` command in 
+[docker-utils](https://github.com/rappdw/docker-utils))
 
 ## Credentials
 There are a number of credentials utlized by this container, including: notebook password, github plugin OAuth 
