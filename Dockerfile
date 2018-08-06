@@ -8,7 +8,7 @@ RUN cd /tmp; \
 RUN jupyter serverextension enable --py jupyterlab \
     && jupyter nbextension enable --py widgetsnbextension \
     && jupyter labextension install \
-        @jupyter-widgets/jupyterlab-manager@0.35.0 \
+        @jupyter-widgets/jupyterlab-manager \
         jupyter-matplotlib \
         jupyterlab_bokeh \
         @pyviz/jupyterlab_pyviz \
