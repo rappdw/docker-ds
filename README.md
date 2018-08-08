@@ -14,14 +14,16 @@ used as well as several jupyter extensions that are useful, including:
 * seaborn
 * holoviews
 
+## Easily Start a Notebook
+If you are looking at this repo, you have likely already installed and are running Docker. I'd recommend that you consider installing [docker-utils](https://github.com/resero-labs/docker-utils) as well. Within docker-utils there is a script that allows you to easily run a notebook environment based on the current directory. Simply navigate to a directory that contains notebooks or subdirectories that contain notebooks and run `run-notebook`. This will start a docker container with the docker-ds image, mount the directory into the container, and serve Jupyter on port 8888. If there is a setup.py file in the directory from which `run-notebook` is invoked, the python package will be installed into the container and be available for use in the notebook.
+
 ## VCS & Notebooks
 While the `.ipynb` files are json, comparing the raw file formats aren't ideal for diffing changes, etc. In order to
-better facilitate working with VCS, especially for human diff comprehension, this image support a jupyter save hook
+better facilitate working with VCS, especially for human diff comprehension, this image supports a jupyter save hook
 that converts a notebook into `.py` and `.html` files in a `.diffs` sub-directory. To enable this, pass the envrionment
-variable `DOCKER_DS_DIFFS=1` when starting the container. (See `run-notebook` command in 
-[docker-utils](https://github.com/rappdw/docker-utils))
+variable `DOCKER_DS_DIFFS=1` when starting the container. 
 
-## Credentials
+## Credentials (Optional)
 There are a number of credentials utlized by this container, including: notebook password, github plugin OAuth 
 credentials, google drive OAuth credentials, etc.
 
@@ -32,15 +34,6 @@ the container upon container start.
 The code assumes an aws profile of 'ds-notebook'. If unable to access credstash, 
 appropriate defaults will be used if available. In most cases extensions will not
 function.
-
-## Configuration
-### dockerutils.cfg
-If you use dockerutils, the following configuration will make a notebook available in your project. 
-```ini
-[notebook]
-volumes=--mount type=bind,source={project_root},target=/home/jovyan/project -v /data:/data --mount type=bind,source=/Users/{user}/.aws,target=/home/jovyan/.aws
-ports=-p 8888:8888
-```
 
 ### AWS
 In your ~/.aws directory create a credentials and config file simlar to the following:
@@ -56,6 +49,15 @@ aws_access_key_id = ....
 ```ini
 [profile ds-notebook]
 region = us-west-2
+```
+
+## Configuration
+### dockerutils.cfg
+If you use docker-utils, the following configuration will make a notebook available in your project and allow you to configure any project specific settings you'd like present for the container. 
+```ini
+[notebook]
+volumes=--mount type=bind,source={project_root},target=/home/jovyan/project -v /data:/data --mount type=bind,source=/Users/{user}/.aws,target=/home/jovyan/.aws
+ports=-p 8888:8888
 ```
 
 ### Related Extensions
