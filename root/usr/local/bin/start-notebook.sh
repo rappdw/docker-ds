@@ -4,14 +4,17 @@
 
 set -e
 
-# if we are running on OSX, don't bother signing the notebooks, we are probably on a devlopers laptop...
-if [[ ! $(uname -r) = *'linuxkit-aufs'* ]]; then
+# if we are running on OSX, don't bother signing the notebooks, we are probably on a developer's laptop...
+if [[ ! $(uname -r) = *'linuxkit'* ]]; then
     if [ -e /home/jovyan/project/notebooks ]; then
         TMP_XXX_SAVE=`pwd`
         # for any notebooks in the 'notebooks' sub-dir, sign them, we will "trust" them
         cd /home/jovyan/project/notebooks
         for f in *.ipynb; do
-            jupyter trust "$f"
+            # if there aren't any *.ipynb then '*.ipynb' is sent through the loop as $f
+            if [[ -e $f ]]; then
+                jupyter trust "$f"
+            fi
         done
         cd $TMP_XXX_SAVE
     fi
