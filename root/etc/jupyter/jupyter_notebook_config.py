@@ -11,7 +11,7 @@ from subprocess import check_call
 # detect if this is container is running on a mac
 # this is a bit hacky and if docker changes significantly, it won't work, and it may have some false
 # positives as well, but for now, it works
-on_mac = 'linuxkit-aufs' in os.uname().release
+on_mac = 'linuxkit' in os.uname().release
 
 c = get_config()
 # in latest version of docker, the docker host IP is being written as the last line in /etc/hosts
