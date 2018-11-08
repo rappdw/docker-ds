@@ -1,9 +1,9 @@
-FROM rappdw/docker-python-node:p3.6.5-n8.11.3-slim-jessie
+FROM rappdw/nvidia-python-node
 
 COPY root/tmp/requirements.txt /tmp/requirements.txt
 
 RUN cd /tmp; \
-    pip install --no-cache-dir -r requirements.txt
+    pip3 install --no-cache-dir -r requirements.txt
 
 RUN jupyter serverextension enable --py jupyterlab \
     && jupyter nbextension enable --py widgetsnbextension \

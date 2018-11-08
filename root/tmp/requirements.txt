@@ -20,3 +20,5 @@ sympy
 jupyter_contrib_nbextensions
 jupyter_nbextensions_configurator
 jupyterlab_github
+tensorflow-gpu
+keras
