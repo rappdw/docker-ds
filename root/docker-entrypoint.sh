@@ -4,12 +4,14 @@ set -e
 WORKDIR=${WORKDIR:-"/workdir"}
 
 # install the module mounted in $WORKDIR
-if [ -e $WORKDIR/setup.py ]; then
-    pip install -e $WORKDIR
-elif [ -e /home/jovyan/setup.py ]; then
-    pip install -e /home/jovyan
-elif [ -e /home/jovyan/project/setup.py ]; then
-    pip install -e /home/jovyan/project
+if [ ! -z $SKIP_INSTALL ]; then
+    if [ -e $WORKDIR/setup.py ]; then
+        pip install -e $WORKDIR
+    elif [ -e /home/jovyan/setup.py ]; then
+        pip install -e /home/jovyan
+    elif [ -e /home/jovyan/project/setup.py ]; then
+        pip install -e /home/jovyan/project
+    fi
 fi
 
 HOME=/home/jovyan
