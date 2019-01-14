@@ -9,6 +9,7 @@ RUN set -ex; \
         libnss3 \
         libxtst6 \
         libxss1 \
+        sudo \
         xvfb \
     ; \
     conda update -n base conda; \
@@ -62,7 +63,11 @@ ENV NB_USER=jovyan \
 # [notebook]
 # volumes=--mount type=bind,source={project_root},target=/home/jovyan/project
 
-RUN useradd -m -s /bin/bash -N -u $NB_UID $NB_USER
+RUN useradd -m -s /bin/bash -N -u $NB_UID $NB_USER; \
+    usermod -aG sudo $NB_USER
+
+# if you want to allow jovyan to sudo, for instance to be able to conda install, then RUN the following:
+# RUN echo "jovyan ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/jovyan
 
 COPY root/ /
 
