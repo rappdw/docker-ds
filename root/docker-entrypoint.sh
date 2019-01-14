@@ -14,7 +14,7 @@ fi
 
 HOME=/home/jovyan
 if [ -d "/home/jovyan/project" ]; then
-    exec su -m - jovyan -c "cd /home/jovyan/project; $@"
+    exec su -m - jovyan -c ". /opt/conda/etc/profile.d/conda.sh; conda activate base; cd /home/jovyan/project; $@"
 else
-    exec su -m - jovyan -c "cd /home/jovyan; $@"
+    exec su -m - jovyan -c ". /opt/conda/etc/profile.d/conda.sh; conda activate base; cd /home/jovyan; $@"
 fi

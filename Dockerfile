@@ -1,9 +1,41 @@
-FROM rappdw/docker-python-node:p3.6.7-n8.11.3-slim-jessie
+FROM continuumio/miniconda3
 
-COPY root/tmp/requirements.txt /tmp/requirements.txt
-
-RUN cd /tmp; \
-    pip install --no-cache-dir -r requirements.txt
+RUN set -ex; \
+    apt-get update -y; \
+    apt-get install -y \
+        libasound2 \
+        libgconf-2-4 \
+        libgtk2.0-0 \
+        libnss3 \
+        libxtst6 \
+        libxss1 \
+        xvfb \
+    ; \
+    conda update -n base conda; \
+    conda install \
+        bokeh \
+        cython \
+        graphviz \
+        holoviews \
+        ipywidgets \
+        jupyter \
+        jupyterlab \
+        networkx \
+        nodejs \
+        numpy \
+        matplotlib \
+        pandas \
+        plotly \
+        psutil \
+        psycopg2 \
+        scipy \
+        scikit-learn \
+        seaborn \
+        sympy \
+    ; \
+    conda install -c plotly plotly-orca; \
+    printf '#!/bin/bash \nxvfb-run -a /opt/conda/lib/orca_app/orca "$@"' > /opt/conda/bin/orca; \
+    rm -rf /var/tmp/* /tmp/* /var/lib/apt/lists/*
 
 RUN jupyter serverextension enable --py jupyterlab \
     && jupyter nbextension enable --py widgetsnbextension \
@@ -33,6 +65,18 @@ ENV NB_USER=jovyan \
 RUN useradd -m -s /bin/bash -N -u $NB_UID $NB_USER
 
 COPY root/ /
+
+# need to do this so that conda environment carries over to su'd user and so that we can
+# run orca as any user (jovyan in this case)
+RUN chmod a+rwx /root; \
+    chmod a+rwx /tmp
+
+RUN source conda base; \
+    pip install --no-cache-dir \
+        credstash \
+        networkx \
+    ; \
+    rm -rf /var/tmp/* /tmp/* /var/lib/apt/lists/*
 
 CMD ["/usr/local/bin/start-notebook.sh"]
 ENTRYPOINT ["/docker-entrypoint.sh"]
