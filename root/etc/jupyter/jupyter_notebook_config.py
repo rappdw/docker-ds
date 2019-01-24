@@ -79,5 +79,5 @@ def post_save(model, os_path, contents_manager):
     check_call(['jupyter', 'nbconvert', '--to', 'script', '--output-dir', output_dir, fname], cwd=d)
     check_call(['jupyter', 'nbconvert', '--to', 'html', '--output-dir', output_dir, fname], cwd=d)
 
-if 'DOCKER_DS_DIFFS' in os.environ and os.environ['DOCKER_DS_DIFFS'] == '1':
+if 'RESERO_JUPYTER_DIFFS' in os.environ and os.environ['RESERO_JUPYTER_DIFFS'] == '1':
     c.FileContentsManager.post_save_hook = post_save
