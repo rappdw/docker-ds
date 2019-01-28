@@ -65,3 +65,11 @@ ports=-p 8888:8888
 [Jupyterlab Github](https://github.com/jupyterlab/jupyterlab-github)
 
 Requires credstash credentials named: github.client_id, github.client_secret
+
+## Extending This Docker Image Definition
+This docker image has the [EnvironmentKernelSpecManager](https://github.com/Cadair/jupyter_environment_kernels) extension installed
+and configured. Extension of this image can be done in two ways. 
+
+1. Simply conda or pip install whatever you'd like into the base conda environment
+2. Setup an andditional conda environment, install what you'd like into that environment and include ipython. This option will 
+allow you to create a notebook kernel with this new environment.

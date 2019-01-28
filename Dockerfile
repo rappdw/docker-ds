@@ -1,5 +1,11 @@
 FROM continuumio/miniconda3
 
+# 1) apt-install lilbraries we'll need for running without an xwindow and requisite libraries for
+# plotly-orca
+# 2) update conda
+# 3) install what we'll need for the base env to support jupyter we'll diverge a bit from the AWS Deep Learning AMI
+# as this is a miniconda environment, but we'll try to keep it close (pull most of the info from the
+# conda-meta/history file for the base image in AWS Deep Learning AMI
 RUN set -ex; \
     apt-get update -y; \
     apt-get install -y \
@@ -12,30 +18,42 @@ RUN set -ex; \
         sudo \
         xvfb \
     ; \
-    conda update -n base conda; \
-    conda install \
-        bokeh \
+    conda update --yes --quiet -n base conda; \
+    conda install --yes --quiet python=3.6; \
+    conda install --yes --quiet pykerberos=1.2.1; \
+    conda install --yes --quiet -c conda-forge nb_conda=2.2.1; \
+    conda install --yes --quiet -c conda-forge protobuf=3.6.0; \
+    conda install --yes --quiet -c conda-forge openmpi=3.1.0; \
+    conda install --yes --quiet bokeh=0.12.13; \
+    conda install --yes --quiet openjdk=8.0.121; \
+    conda install --yes --quiet s3fs=0.1.5; \
+    conda install --yes --quiet graphviz=2.40.1; \
+    conda install --yes --quiet h5py=2.8.0; \
+    conda install --yes --quiet \
+        autovizwidget \
+        bkcharts \
         cython \
-        graphviz \
         holoviews \
-        ipywidgets \
         jupyter \
         jupyterlab \
+        jupyterlab_launcher \
         networkx \
         nodejs \
-        numpy \
-        matplotlib \
         pandas \
         plotly \
         psutil \
         psycopg2 \
-        scipy \
+        python=3.6 \
+        pyviz_comms \
+        scikit-image \
         scikit-learn \
+        scipy \
         seaborn \
         sympy \
     ; \
-    conda install -c plotly plotly-orca; \
+    conda install --yes --quiet -c plotly plotly-orca; \
     printf '#!/bin/bash \nxvfb-run -a /opt/conda/lib/orca_app/orca "$@"' > /opt/conda/bin/orca; \
+    pip install --no-cache-dir environment_kernels; \
     rm -rf /var/tmp/* /tmp/* /var/lib/apt/lists/*
 
 RUN jupyter serverextension enable --py jupyterlab \
@@ -79,9 +97,18 @@ RUN chmod a+rwx /root; \
 RUN source conda base; \
     pip install --no-cache-dir \
         credstash \
-        networkx \
     ; \
     rm -rf /var/tmp/* /tmp/* /var/lib/apt/lists/*
+
+USER $NB_USER
+RUN set -ex; \
+    mkdir -p ~/.jupyter; \
+    echo "c = get_config() \n\
+c.NotebookApp.kernel_spec_manager_class = 'environment_kernels.EnvironmentKernelSpecManager' \n\
+c.EnvironmentKernelSpecManager.display_name_template=\"{}\" \n\
+c.EnvironmentKernelSpecManager.conda_prefix_template=\"{}\" \n\
+c.NotebookApp.iopub_data_rate_limit = 10000000000" >> ~/.jupyter/jupyter_notebook_config.py
+USER root
 
 CMD ["/usr/local/bin/start-notebook.sh"]
 ENTRYPOINT ["/docker-entrypoint.sh"]
