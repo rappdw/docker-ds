@@ -19,16 +19,23 @@ RUN set -ex; \
         xvfb \
     ; \
     conda update --yes --quiet -n base conda; \
-    conda install --yes --quiet python=3.6; \
-    conda install --yes --quiet pykerberos=1.2.1; \
-    conda install --yes --quiet -c conda-forge nb_conda=2.2.1; \
-    conda install --yes --quiet -c conda-forge protobuf=3.6.0; \
-    conda install --yes --quiet -c conda-forge openmpi=3.1.0; \
-    conda install --yes --quiet bokeh=0.12.13; \
-    conda install --yes --quiet openjdk=8.0.121; \
-    conda install --yes --quiet s3fs=0.1.5; \
-    conda install --yes --quiet graphviz=2.40.1; \
-    conda install --yes --quiet h5py=2.8.0; \
+    conda install --yes --quiet \
+        python=3.6 \
+        pykerberos=1.2.1 \
+    ; \
+    conda install --yes --quiet -c conda-forge \
+        nb_conda=2.2.1 \
+        protobuf=3.6.0 \
+        openmpi=3.1.0 \
+    ; \
+    conda install --yes --quiet \
+        bokeh=0.12.13 \
+        openjdk=8.0.121 \
+        s3fs=0.1.5 \
+        graphviz=2.40.1 \
+        h5py=2.8.0 \
+    ; \
+    conda install --yes --quiet -c plotly plotly-orca; \
     conda install --yes --quiet \
         autovizwidget \
         bkcharts \
@@ -51,10 +58,11 @@ RUN set -ex; \
         seaborn \
         sympy \
     ; \
-    conda install --yes --quiet -c plotly plotly-orca; \
     printf '#!/bin/bash \nxvfb-run -a /opt/conda/lib/orca_app/orca "$@"' > /opt/conda/bin/orca; \
     pip install --no-cache-dir environment_kernels; \
     rm -rf /var/tmp/* /tmp/* /var/lib/apt/lists/*
+
+
 
 RUN jupyter serverextension enable --py jupyterlab \
     && jupyter nbextension enable --py widgetsnbextension \
@@ -108,6 +116,7 @@ c.NotebookApp.kernel_spec_manager_class = 'environment_kernels.EnvironmentKernel
 c.EnvironmentKernelSpecManager.display_name_template=\"{}\" \n\
 c.EnvironmentKernelSpecManager.conda_prefix_template=\"{}\" \n\
 c.NotebookApp.iopub_data_rate_limit = 10000000000" >> ~/.jupyter/jupyter_notebook_config.py
+RUN conda init
 USER root
 
 CMD ["/usr/local/bin/start-notebook.sh"]
