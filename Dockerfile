@@ -32,6 +32,15 @@ ENV NB_USER=jovyan \
 
 RUN useradd -m -s /bin/bash -N -u $NB_UID $NB_USER
 
+RUN set -ex; \
+    apt-get update; \
+    apt-get install -y \
+        less \
+        vim \
+    ; \
+    apt-get clean; \
+    rm -rf /var/tmp/* /tmp/* /var/lib/apt/lists/*
+
 COPY root/ /
 
 CMD ["/usr/local/bin/start-notebook.sh"]
