@@ -1,4 +1,4 @@
-FROM rappdw/docker-python-node:p3.6.7-n8.11.3-slim-jessie
+FROM resero/docker-python-node:p3.6.8-n8.15.1-slim-stretch
 
 COPY root/tmp/requirements.txt /tmp/requirements.txt
 
