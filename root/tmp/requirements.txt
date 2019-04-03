@@ -1,5 +1,5 @@
 bokeh
-credstash-any-crypto
+credstash
 graphviz
 holoviews
 ipympl
