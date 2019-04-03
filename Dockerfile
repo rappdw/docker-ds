@@ -105,6 +105,8 @@ RUN chmod a+rwx /root; \
 RUN source conda base; \
     pip install --no-cache-dir \
         credstash \
+        vim \
+        less \
     ; \
     rm -rf /var/tmp/* /tmp/* /var/lib/apt/lists/*
 
