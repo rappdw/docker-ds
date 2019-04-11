@@ -8,6 +8,27 @@ import errno
 import stat
 from subprocess import check_call
 
+def get_session_params():
+    import boto3
+    import requests
+    from credstash import get_session_params
+    # first try boto3 (This will work on both an ec2 and laptop, but doesn't
+    # work in kubernetes on AWS for some reason
+    region = boto3.session.Session().region_name
+    if not region:
+        # next try the AWS config route (This works in kubernets)
+        # set a short time out on this
+        try:
+            r = requests.get("http://169.254.169.254/latest/dynamic/instance-identity/document", timeout=0.2)
+            response_json = r.json()
+            region = response_json.get('region')
+        except requests.exceptions.ConnectTimeout:
+            pass
+    if region:
+        return {'region': region}
+    # finally as a fallback try to get session parameters from ~/.aws/config under ds-notebook profile
+    return get_session_params('ds-notebook', None)
+
 # detect if this is container is running on a mac
 # this is a bit hacky and if docker changes significantly, it won't work, and it may have some false
 # positives as well, but for now, it works
@@ -22,8 +43,8 @@ c.NotebookApp.port = 8888
 c.NotebookApp.open_browser = False
 
 try:
-    from credstash import get_session_params, listSecrets, getSecret
-    session_params = get_session_params('ds-notebook', None)
+    from credstash import listSecrets, getSecret
+    session_params = get_session_params()
     items = [item['name'] for item in listSecrets(**session_params) if item['name'] in [
         'notebook.password', 'notebook.token', 'github.client_id', 'github.client_secret', 'google.drive.client_id'
     ]]
