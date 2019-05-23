@@ -41,9 +41,7 @@ RUN set -ex; \
     apt-get clean; \
     rm -rf /var/tmp/* /tmp/* /var/lib/apt/lists/*
 
-COPY root/usr/local/bin /usr/local/bin
-COPY root/etc/jupyter /etc/jupyter
-COPY root/docker-entrypoint.sh /docker-entrypoint.sh
+COPY root/* /
 
 CMD ["/usr/local/bin/start-notebook.sh"]
 ENTRYPOINT ["/docker-entrypoint.sh"]
