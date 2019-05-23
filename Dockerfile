@@ -1,6 +1,6 @@
 FROM resero/docker-python-node:p3.6.8-n8.15.1-slim-stretch
 
-COPY root/tmp/requirements.txt /tmp/requirements.txt
+COPY requirements.txt /tmp/requirements.txt
 
 RUN cd /tmp; \
     pip install --no-cache-dir -r requirements.txt
@@ -41,7 +41,7 @@ RUN set -ex; \
     apt-get clean; \
     rm -rf /var/tmp/* /tmp/* /var/lib/apt/lists/*
 
-COPY root/* /
+COPY root /
 
 CMD ["/usr/local/bin/start-notebook.sh"]
 ENTRYPOINT ["/docker-entrypoint.sh"]
