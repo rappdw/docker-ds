@@ -27,5 +27,5 @@ if [[ ! -z "${JUPYTERHUB_API_TOKEN}" ]]; then
   # launched by JupyterHub, use single-user entrypoint
   exec /usr/local/bin/start-singleuser.sh $*
 else
-  . /usr/local/bin/start.sh jupyter $NOTEBOOK_MODE $*
+  . /usr/local/bin/start.sh jupyter $NOTEBOOK_MODE $* --NotebookApp.custom_display_url=http://127.0.0.1:8888
 fi
