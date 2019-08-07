@@ -1,4 +1,4 @@
-FROM resero/docker-python-node:p3.6.8-n8.15.1-slim-stretch
+FROM resero/python-node:p3.6.8-n8.16.0-buster-slim
 
 COPY requirements.txt /tmp/requirements.txt
 
