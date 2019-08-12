@@ -19,8 +19,9 @@ elif [ -e /home/jovyan/project/requirements.txt ]; then
 fi
 
 HOME=/home/jovyan
+ESCAPED_ARGS=$(printf "%q " "$@")
 if [ -d "/home/jovyan/project" ]; then
-    exec su -m - jovyan -c "cd /home/jovyan/project; $@"
+    exec su -m - jovyan -c "cd /home/jovyan/project; $ESCAPED_ARGS"
 else
-    exec su -m - jovyan -c "cd /home/jovyan; $@"
+    exec su -m - jovyan -c "cd /home/jovyan; $ESCAPED_ARGS"
 fi
