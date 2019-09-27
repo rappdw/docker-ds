@@ -152,3 +152,18 @@ ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-9.0/targets/x86_64-linux/li
 CMD ["/usr/local/bin/start-notebook.sh"]
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
+
+#
+#  Correctly enabling the UTF-8 en_US encoding
+#    (Article: https://daten-und-bass.io/blog/fixing-missing-locale-setting-in-ubuntu-docker-image/)
+#
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y locales \
+    && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
+    && dpkg-reconfigure --frontend=noninteractive locales \
+    && update-locale LANG=en_US.UTF-8 \
+    && apt-get clean \
+    && rm -rf /var/tmp/* /tmp/* /var/lib/apt/lists/*
+ENV LANG en_US.UTF-8
+ENV LC_ALL en_US.UTF-8
+
