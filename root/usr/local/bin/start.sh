@@ -50,10 +50,10 @@ if [ $(id -u) == 0 ] ; then
     exec su $NB_USER -c "env PATH=$PATH $*"
 else
   if [[ ! -z "$NB_UID" && "$NB_UID" != "$(id -u)" ]]; then
-      echo 'Container must be run as root to set $NB_UID'
+      echo 'Container must be run as root to set $NB_UID. $NB_UID: '$NB_UID', id -u: '$(id -u)
   fi
   if [[ ! -z "$NB_GID" && "$NB_GID" != "$(id -g)" ]]; then
-      echo 'Container must be run as root to set $NB_GID'
+      echo 'Container must be run as root to set $NB_GID. $NB_GID: '$NB_GID', id -g: '$(id -g)
   fi
   if [[ "$GRANT_SUDO" == "1" || "$GRANT_SUDO" == 'yes' ]]; then
       echo 'Container must be run as root to grant sudo permissions'

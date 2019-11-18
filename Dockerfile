@@ -23,7 +23,7 @@ RUN jupyter serverextension enable --py jupyterlab \
 # 1000. This allows for "correct" file priveledges when doing so
 ENV NB_USER=jovyan \
     NB_UID=1000 \
-    NB_GID=1000
+    NB_GID=100
 
 # assumes that the project has been mounted into /home/jovyan/project
 # to ensure this derived projects should add the following to their dockerutils.cfg file

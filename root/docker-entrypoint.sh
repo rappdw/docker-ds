@@ -21,7 +21,7 @@ fi
 HOME=/home/jovyan
 ESCAPED_ARGS=$(printf "%q " "$@")
 if [ -d "/home/jovyan/project" ]; then
-    exec su -m - jovyan -c "cd /home/jovyan/project; $ESCAPED_ARGS"
+    exec su -m jovyan -c "cd /home/jovyan/project; $ESCAPED_ARGS"
 else
-    exec su -m - jovyan -c "cd /home/jovyan; $ESCAPED_ARGS"
+    exec su -m jovyan -c "cd /home/jovyan; $ESCAPED_ARGS"
 fi
